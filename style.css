@@ -1,0 +1,87 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* 顶部导航条 */
+.top-nav {
+    display: flex;
+    justify-content: space-around;
+    background-color: #003366;
+    padding: 1rem;
+}
+
+.nav-item {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-item:hover {
+    background-color: #0055a5;
+}
+
+/* 轮播图区域 */
+.carousel {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: 400px;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-inner img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+/* 底部信息栏 */
+.site-footer {
+    background-color: #f4f4f4;
+    padding: 2rem;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.site-description, .notice-board {
+    flex: 1;
+    margin: 0 1rem;
+}
+
+.site-description h3, .notice-board h3 {
+    color: #003366;
+    margin-bottom: 1rem;
+}
+
+.notice-board ul {
+    list-style: none;
+}
+
+.notice-board li {
+    margin-bottom: 0.5rem;
+}
+
+.notice-board a {
+    color: #0055a5;
+    text-decoration: none;
+}
