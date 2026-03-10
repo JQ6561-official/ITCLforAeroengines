@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>案例详情 · 全三维数字样机 | 航发智库</title>
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- MathJax 支持 LaTeX 渲染 (tex-chtml 组件) -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" id="MathJax-script" async></script>
+    <style>
+        /* ========== 全局样式 (继承首页风格) ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            color: #1e2b3a;
+            line-height: 1.5;
+        }
+
+        .wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.05);
+        }
+
+        /* ----- 顶部四大板块导航栏 (完全复用首页) ----- */
+        .nav-four {
+            display: flex;
+            flex-wrap: wrap;
+            background: linear-gradient(145deg, #0a2f44, #0b3b4f);
+            color: white;
+            padding: 0.2rem 0;
+            border-bottom: 4px solid #ffb347;
+        }
+
+        .nav-item {
+            flex: 1 1 200px;
+            text-align: center;
+            padding: 1.4rem 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.9);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border-right: 1px solid rgba(255,255,255,0.15);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .nav-item:last-child { border-right: none; }
+        .nav-item i {
+            font-size: 1.6rem;
+            color: #ffcf7a;
+            transition: transform 0.2s;
+        }
+        .nav-item:hover {
+            background-color: #1f5a7e;
+            color: white;
+            box-shadow: inset 0 -4px 0 #ffb347;
+        }
+        .nav-item:hover i {
+            transform: scale(1.1);
+            color: #ffe6b3;
+        }
+        /* 当前模块高亮 (本例属于研发设计数字化) */
+        .nav-item.active {
+            background-color: #1f5a7e;
+            box-shadow: inset 0 -4px 0 #ffb347;
+            color: white;
+        }
+        .nav-item.active i { color: #ffe6b3; }
+
+        @media (max-width: 700px) {
+            .nav-item {
+                font-size: 1rem;
+                padding: 1rem 0.2rem;
+                flex-basis: 50%;
+            }
+            .nav-item i { font-size: 1.3rem; }
+        }
+
+        /* ----- 子页面内容区域 (案例详情) ----- */
+        .subpage-container {
+            padding: 2rem 2.5rem;
+            background-color: #ffffff;
+            min-height: 500px;
+        }
+
+        /* 案例标题 */
+        .case-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0a2f44;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 6px solid #ffb347;
+            padding-left: 1.5rem;
+        }
+        .case-title i {
+            color: #d48d2b;
+            font-size: 2rem;
+        }
+
+        /* 选项卡栏 */
+        .tab-bar {
+            display: flex;
+            flex-wrap: wrap;
+            background: #eaf1f9;
+            border-radius: 60px;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #caddf0;
+            gap: 0.3rem;
+        }
+        .tab {
+            flex: 1 1 auto;
+            text-align: center;
+            padding: 0.9rem 1rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            color: #1d4460;
+            cursor: pointer;
+            transition: all 0.15s;
+            background: transparent;
+            border: none;
+            white-space: nowrap;
+        }
+        .tab i { margin-right: 8px; color: #d48d2b; }
+        .tab:hover {
+            background: rgba(255, 180, 70, 0.2);
+            color: #0b3b4f;
+        }
+        .tab.active {
+            background: #ffb347;
+            color: #0a2f44;
+            box-shadow: 0 4px 10px rgba(255,160,30,0.3);
+        }
+        .tab.active i { color: #1d4460; }
+        .tab.return-tab {
+            background: #d1e0ed;
+            color: #1e506e;
+        }
+        .tab.return-tab:hover {
+            background: #b8cfdf;
+        }
+
+        /* 内容展示卡片 (带编辑功能) */
+        .content-card {
+            background: #f8fcff;
+            border: 1px solid #d9e8f2;
+            border-radius: 40px;
+            padding: 2rem 2.5rem;
+            margin: 1.5rem 0 2.5rem 0;
+            box-shadow: 0 8px 20px rgba(0,40,60,0.06);
+            position: relative;
+            min-height: 200px;
+        }
+        .content-display {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #1f405b;
+            overflow-x: auto;
+        }
+        .content-display p { margin-bottom: 1rem; }
+        .content-display .math { font-size: 1.2rem; }  /* LaTeX 渲染微调 */
+
+        .edit-button {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: white;
+            border: 1px solid #ffb347;
+            color: #d48d2b;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.03);
+        }
+        .edit-button:hover {
+            background: #ffb347;
+            color: #0a2f44;
+            transform: scale(1.05);
+        }
+
+        /* 编辑区域 */
+        .edit-area {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .edit-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 1.5rem;
+            border-radius: 30px;
+            border: 2px solid #ffb347;
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+            background: white;
+            outline: none;
+            font-family: 'Courier New', monospace;
+        }
+        .edit-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        .save-btn, .cancel-btn {
+            border: none;
+            padding: 0.7rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.15s;
+            font-size: 1rem;
+        }
+        .save-btn {
+            background: #ffb347;
+            color: #0a2f44;
+        }
+        .save-btn:hover {
+            background: #ffa01e;
+        }
+        .cancel-btn {
+            background: #dde5ed;
+            color: #2f5777;
+        }
+        .cancel-btn:hover {
+            background: #c2d2e0;
+        }
+
+        /* 点赞行 */
+        .like-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 1.2rem 0 1.8rem;
+            padding: 0.8rem 1.5rem;
+            background: #f2f7fd;
+            border-radius: 50px;
+            width: fit-content;
+            border: 1px solid #d5e2f0;
+        }
+        .like-btn {
+            background: transparent;
+            border: 2px solid #ffb347;
+            color: #ff8c1a;
+            padding: 0.5rem 2rem;
+            border-radius: 40px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .like-btn i { font-size: 1.5rem; }
+        .like-btn:hover {
+            background: #ffb347;
+            color: #0a2f44;
+            border-color: #ffb347;
+        }
+        .like-count {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1b5a7a;
+        }
+
+        /* 评论区 */
+        .comment-section {
+            margin-top: 2rem;
+            border-top: 2px dashed #caddf0;
+            padding-top: 2rem;
+        }
+        .comment-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: #f0f8ff;
+            padding: 1.8rem;
+            border-radius: 50px;
+        }
+        .comment-input {
+            flex: 2 1 250px;
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 40px;
+            border: 1px solid #c0d6e8;
+            padding: 0.3rem 1.2rem;
+        }
+        .comment-input i {
+            color: #a0b8cc;
+            margin-right: 8px;
+        }
+        .comment-input input, .comment-input textarea {
+            border: none;
+            width: 100%;
+            padding: 0.7rem 0;
+            font-size: 1rem;
+            outline: none;
+            background: transparent;
+            resize: vertical;
+        }
+        .comment-input.textarea {
+            flex: 3 1 300px;
+            align-items: flex-start;
+            padding: 0.6rem 1.2rem;
+        }
+        .comment-input.textarea textarea {
+            min-height: 60px;
+        }
+        .post-comment-btn {
+            background: #1f5a7e;
+            border: none;
+            border-radius: 50px;
+            padding: 0.8rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+            border: 1px solid #307095;
+        }
+        .post-comment-btn:hover {
+            background: #0b3b4f;
+        }
+
+        .comments-list {
+            list-style: none;
+            border: 1px solid #e0ecf5;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        .comment-item {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 1.2rem 1.8rem;
+            background: #ffffff;
+            border-bottom: 1px solid #e6f0f8;
+            gap: 10px;
+        }
+        .comment-item:last-child { border-bottom: none; }
+        .comment-avatar {
+            width: 48px; height: 48px;
+            background: #ffe0b9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b25600;
+            font-weight: bold;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .comment-content {
+            flex: 3 1 300px;
+        }
+        .comment-author {
+            font-weight: 700;
+            color: #0a2f44;
+            margin-right: 15px;
+        }
+        .comment-text {
+            color: #1f405b;
+            margin-top: 4px;
+            word-break: break-word;
+        }
+        .comment-time {
+            font-size: 0.8rem;
+            color: #839eb3;
+            margin-left: 12px;
+        }
+        .comment-delete {
+            margin-left: auto;
+            background: transparent;
+            border: none;
+            color: #c0a27a;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: 0.15s;
+        }
+        .comment-delete:hover {
+            background: #fbe5d3;
+            color: #c00;
+        }
+
+        .footer-note {
+            background-color: #0b2d3e;
+            color: #bcd1df;
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.95rem;
+            border-top: 1px solid #375f73;
+        }
+        a { text-decoration: none; color: inherit; }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <!-- 四大导航 (当前模块为研发设计数字化) -->
+    <div class="nav-four">
+        <a href="yf.html" class="nav-item"><i class="fas fa-drafting-compass"></i> 研发设计数字化</a>
+        <a href="zz.html" class="nav-item"><i class="fas fa-industry"></i> 生产制造智能化</a>
+        <a href="wx.html" class="nav-item active"><i class="fas fa-tools"></i> 维修保障智慧化</a>
+        <a href="cy.html" class="nav-item"><i class="fas fa-handshake"></i> 产业协同平台化</a>
+        <a href="index.html" class="nav-item"><i class="fas fa-cogs"></i> 首页</a>
+    </div>
+
+    <!-- 案例详情区域 -->
+    <div class="subpage-container">
+        <!-- 案例标题 -->
+        <div class="case-title">
+            <i class="fas fa-cube"></i> 案例：全三维数字样机协同设计平台
+        </div>
+
+        <!-- 选项卡: 企业介绍 / 技术场景 / 创新亮点 / 调研思考 / 返回 -->
+        <div class="tab-bar" id="tabBar">
+            <div class="tab active" data-tab="0"><i class="fas fa-building"></i> 企业介绍</div>
+            <div class="tab" data-tab="1"><i class="fas fa-microchip"></i> 技术场景</div>
+            <div class="tab" data-tab="2"><i class="fas fa-lightbulb"></i> 创新亮点</div>
+            <div class="tab" data-tab="3"><i class="fas fa-clipboard-list"></i> 调研思考</div>
+            <div class="tab return-tab" id="returnTab"><i class="fas fa-arrow-left"></i> 返回</div>
+        </div>
+
+        <!-- 内容展示卡片 + 编辑按钮 -->
+        <div class="content-card" id="contentCard">
+            <div class="content-display" id="contentDisplay"></div>
+            <div class="edit-button" id="editBtn" title="编辑(需密码)"><i class="fas fa-pencil-alt"></i></div>
+            <!-- 编辑区域(默认隐藏) -->
+            <div id="editContainer" style="display: none;"></div>
+        </div>
+
+        <!-- 点赞区域 -->
+        <div class="like-section">
+            <button class="like-btn" id="likeBtn"><i class="fas fa-heart"></i> 点赞</button>
+            <span class="like-count" id="likeCount">42</span>
+        </div>
+
+        <!-- 评论区 -->
+        <div class="comment-section">
+            <div class="comment-form">
+                <div class="comment-input" style="flex:1 1 180px;">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="commentAuthor" placeholder="您的昵称" value="访客">
+                </div>
+                <div class="comment-input textarea">
+                    <i class="fas fa-comment"></i>
+                    <textarea id="commentContent" placeholder="写下您的评论..."></textarea>
+                </div>
+                <button class="post-comment-btn" id="postCommentBtn"><i class="fas fa-paper-plane"></i> 发布</button>
+            </div>
+            <ul class="comments-list" id="commentsList">
+                <!-- 动态渲染评论 -->
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        <i class="fas fa-cogs"></i> 航空发动机产业智能化转型案例库 · 赋能智慧动力
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- 固定案例ID (用于存储) ----------
+        const CASE_ID = 'case_digital_twin_001';
+
+        // ---------- 默认选项卡内容 (支持 LaTeX) ----------
+        const DEFAULT_TAB_CONTENTS = [
+            `**企业介绍**  
+中国航发集团下属数字技术中心致力于航空发动机全三维设计。采用基于模型的系统工程(MBSE)方法，构建了统一数字样机平台。关键公式示例：雷诺平均纳维-斯托克斯方程 $\\frac{\\partial \\bar{u}_i}{\\partial t} + \\bar{u}_j \\frac{\\partial \\bar{u}_i}{\\partial x_j} = -\\frac{1}{\\rho}\\frac{\\partial \\bar{p}}{\\partial x_i} + \\nu \\frac{\\partial^2 \\bar{u}_i}{\\partial x_j \\partial x_j} - \\frac{\\partial \\overline{u_i' u_j'}}{\\partial x_j}$ 体现湍流模拟。`,
+            `**技术场景**  
+涵盖数字孪生设计、实时仿真与虚拟集成。主要工具包括ANSYS Twin Builder、达索系统。叶片冷却通道设计采用共轭传热(CHT)分析，网格量超2000万。LaTeX: 湍流强度 $I = 0.16(Re)^{-1/8}$。`,
+            `**创新亮点**  
+- 全三维参数化建模，自动生成多方案  
+- 基于AI的代理模型加速优化  
+- 多学科协同，更改传播时间缩短60%  
+创新公式：$\\mathcal{L}_{GAN}(G,D) = \\mathbb{E}[\\log D(x)] + \\mathbb{E}[\\log(1-D(G(z)))]$ (用于流场预测GAN)`,
+            `**调研思考**  
+通过走访GE、罗罗，我们发现数字主线仍面临数据孤岛。建议推广统一数据模型(ISO 23247)。下一步结合大语言模型辅助设计。思考：如何平衡保真度与计算代价？$ \\text{权衡函数} \\quad J = \\int_{\\Omega} (\\alpha \\|\\nabla u\\|^2 + \\beta \\|u-u_{obs}\\|^2 ) d\\Omega$`
+        ];
+
+        // 当前激活选项卡索引 (0~3)
+        let currentTab = 0;
+        // 内容数组 (从localStorage读取，或默认)
+        let tabContents = [];
+
+        // 点赞数
+        let likeCount = 0;
+        // 评论数组
+        let comments = [];
+
+        // 管理员密码 (固定演示)
+        const ADMIN_PASSWORD = 'admin';
+
+        // DOM 元素
+        const tabElements = document.querySelectorAll('.tab[data-tab]');
+        const returnTab = document.getElementById('returnTab');
+        const contentDisplay = document.getElementById('contentDisplay');
+        const editBtn = document.getElementById('editBtn');
+        const editContainer = document.getElementById('editContainer');
+        const likeBtn = document.getElementById('likeBtn');
+        const likeSpan = document.getElementById('likeCount');
+        const commentsList = document.getElementById('commentsList');
+        const postCommentBtn = document.getElementById('postCommentBtn');
+        const commentAuthor = document.getElementById('commentAuthor');
+        const commentContent = document.getElementById('commentContent');
+
+        // ---------- 加载/存储数据 ----------
+        function loadData() {
+            // 加载选项卡内容
+            const storedTabs = localStorage.getItem(`${CASE_ID}_tabs`);
+            if (storedTabs) {
+                try { tabContents = JSON.parse(storedTabs); } catch(e){ tabContents = [...DEFAULT_TAB_CONTENTS]; }
+            } else {
+                tabContents = [...DEFAULT_TAB_CONTENTS];
+            }
+
+            // 加载点赞数
+            const storedLikes = localStorage.getItem(`${CASE_ID}_likes`);
+            likeCount = storedLikes ? parseInt(storedLikes, 10) : 42;
+
+            // 加载评论
+            const storedComments = localStorage.getItem(`${CASE_ID}_comments`);
+            if (storedComments) {
+                try { comments = JSON.parse(storedComments); } catch(e){ comments = []; }
+            } else {
+                // 默认评论
+                comments = [
+                    { id: 'c1', author: '热力工程师', text: '非常详细的案例，MBSE部分很有启发。', time: Date.now() - 86400000 },
+                    { id: 'c2', author: '气动专家', text: '期待后续更多数字孪生数据。', time: Date.now() - 3600000 }
+                ];
+            }
+
+            likeSpan.textContent = likeCount;
+        }
+
+        function saveTabs() {
+            localStorage.setItem(`${CASE_ID}_tabs`, JSON.stringify(tabContents));
+        }
+        function saveLikes() {
+            localStorage.setItem(`${CASE_ID}_likes`, likeCount);
+        }
+        function saveComments() {
+            localStorage.setItem(`${CASE_ID}_comments`, JSON.stringify(comments));
+        }
+
+        // 渲染当前选项卡内容到展示区，并调用MathJax
+        function renderCurrentTab() {
+            if (tabContents[currentTab]) {
+                contentDisplay.innerHTML = tabContents[currentTab].replace(/\n/g, '<br>');
+            } else {
+                contentDisplay.innerHTML = '暂无内容';
+            }
+            // 触发 MathJax 渲染 (若存在)
+            if (window.MathJax) {
+                MathJax.typesetPromise([contentDisplay]).catch(err => console.warn('MathJax渲染错误', err));
+            }
+        }
+
+        // 渲染所有评论
+        function renderComments() {
+            if (comments.length === 0) {
+                commentsList.innerHTML = '<div style="text-align:center; padding:2rem; color:#839eb3;">暂无评论，来说两句吧</div>';
+                return;
+            }
+            // 按时间倒序
+            const sorted = [...comments].sort((a,b) => b.time - a.time);
+            let html = '';
+            sorted.forEach(c => {
+                const date = new Date(c.time).toLocaleString('zh-CN', {hour12: false});
+                html += `
+                    <li class="comment-item" data-comment-id="${c.id}">
+                        <div class="comment-avatar">${c.author.charAt(0)}</div>
+                        <div class="comment-content">
+                            <span class="comment-author">${escapeHtml(c.author)}</span>
+                            <span class="comment-time">${date}</span>
+                            <div class="comment-text">${escapeHtml(c.text)}</div>
+                        </div>
+                        <button class="comment-delete" title="删除评论(需密码)"><i class="fas fa-trash-alt"></i></button>
+                    </li>
+                `;
+            });
+            commentsList.innerHTML = html;
+            // 给删除按钮添加事件
+            document.querySelectorAll('.comment-delete').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const li = e.currentTarget.closest('.comment-item');
+                    if (!li) return;
+                    const commentId = li.dataset.commentId;
+                    deleteCommentById(commentId);
+                });
+            });
+        }
+
+        // 简单转义
+        function escapeHtml(unsafe) {
+            return unsafe.replace(/[&<>"]/g, function(m) {
+                if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; if(m === '"') return '&quot;';
+                return m;
+            });
+        }
+
+        // 删除评论 (验证密码)
+        function deleteCommentById(commentId) {
+            const pwd = prompt('请输入管理员密码以删除评论：');
+            if (pwd !== ADMIN_PASSWORD) {
+                alert('密码错误，无法删除');
+                return;
+            }
+            comments = comments.filter(c => c.id !== commentId);
+            saveComments();
+            renderComments();
+        }
+
+        // 初始化选项卡高亮
+        function setActiveTab(index) {
+            tabElements.forEach((tab, i) => {
+                if (i === index) tab.classList.add('active');
+                else tab.classList.remove('active');
+            });
+            currentTab = index;
+            renderCurrentTab();
+        }
+
+        // 显示编辑界面
+        function showEditor() {
+            const currentText = tabContents[currentTab] || '';
+            editContainer.style.display = 'block';
+            editContainer.innerHTML = `
+                <div class="edit-area">
+                    <textarea class="edit-textarea" id="editorTextarea">${escapeHtml(currentText)}</textarea>
+                    <div class="edit-actions">
+                        <button class="save-btn" id="saveEditBtn"><i class="fas fa-save"></i> 保存</button>
+                        <button class="cancel-btn" id="cancelEditBtn"><i class="fas fa-times"></i> 取消</button>
+                    </div>
+                </div>
+            `;
+            contentDisplay.style.display = 'none';
+            editBtn.style.display = 'none';
+
+            document.getElementById('saveEditBtn').addEventListener('click', () => {
+                const pwd = prompt('请输入管理员密码以保存编辑：');
+                if (pwd !== ADMIN_PASSWORD) {
+                    alert('密码错误，无法保存');
+                    return;
+                }
+                const newText = document.getElementById('editorTextarea').value;
+                tabContents[currentTab] = newText;
+                saveTabs();
+                exitEdit();
+                renderCurrentTab();
+            });
+
+            document.getElementById('cancelEditBtn').addEventListener('click', exitEdit);
+        }
+
+        function exitEdit() {
+            editContainer.style.display = 'none';
+            editContainer.innerHTML = '';
+            contentDisplay.style.display = 'block';
+            editBtn.style.display = 'flex';
+        }
+
+        // 事件绑定
+        tabElements.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                const idx = parseInt(tab.dataset.tab, 10);
+                setActiveTab(idx);
+            });
+        });
+
+        // 返回处理
+        returnTab.addEventListener('click', () => {
+            if (confirm('返回案例列表页？')) {
+                window.location.href = 'wx.html';  // 假设从维修保障页面进入，但统一返回列表
+            }
+        });
+
+        // 编辑按钮
+        editBtn.addEventListener('click', () => {
+            const pwd = prompt('请输入管理员密码进入编辑模式：');
+            if (pwd !== ADMIN_PASSWORD) {
+                alert('密码错误');
+                return;
+            }
+            showEditor();
+        });
+
+        // 点赞
+        likeBtn.addEventListener('click', () => {
+            likeCount += 1;
+            likeSpan.textContent = likeCount;
+            saveLikes();
+        });
+
+        // 发布评论
+        postCommentBtn.addEventListener('click', () => {
+            const author = commentAuthor.value.trim() || '匿名';
+            const text = commentContent.value.trim();
+            if (!text) {
+                alert('评论内容不能为空');
+                return;
+            }
+            const newComment = {
+                id: 'c_' + Date.now() + Math.random().toString(36).substr(2, 6),
+                author: author,
+                text: text,
+                time: Date.now()
+            };
+            comments.push(newComment);
+            saveComments();
+            renderComments();
+            commentContent.value = ''; // 清空输入
+        });
+
+        // 初始化数据与渲染
+        loadData();
+        renderCurrentTab();
+        renderComments();
+
+        // 确保MathJax渲染动态内容 (也用于编辑保存后)
+        window.addEventListener('load', () => {
+            if (window.MathJax) {
+                MathJax.typesetPromise([contentDisplay]).catch(e => console.warn(e));
+            }
+        });
+
+        // 如果管理员编辑保存后，renderCurrentTab会再次触发MathJax渲染
+
+        // 处理点击外部cancel等情况 (已经包含)
+    })();
+</script>
+<!-- 说明：本页面为案例详情页，包含五个选项卡及编辑、点赞评论功能。
+     管理员密码统一为 admin (演示用)。编辑支持 LaTeX，通过MathJax渲染。 -->
+</body>
+</html>

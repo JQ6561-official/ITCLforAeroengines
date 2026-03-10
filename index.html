@@ -366,10 +366,10 @@
 <div class="wrapper">
     <!-- 四大板块导航入口（研发设计数字化、生产制造智能化、维修保障智慧化、产业协同平台化） -->
     <div class="nav-four">
-        <a href="https://jq6561-official.github.io/ITCLforAeroengines/yf" class="nav-item"><i class="fas fa-drafting-compass"></i> 研发设计数字化</a>
-        <a href="#" class="nav-item"><i class="fas fa-industry"></i> 生产制造智能化</a>
-        <a href="#" class="nav-item"><i class="fas fa-tools"></i> 维修保障智慧化</a>
-        <a href="#" class="nav-item"><i class="fas fa-handshake"></i> 产业协同平台化</a>
+         <a href="yf.html" class="nav-item active"><i class="fas fa-drafting-compass"></i> 研发设计数字化</a>
+        <a href="zz.html" class="nav-item"><i class="fas fa-industry"></i> 生产制造智能化</a>
+        <a href="wx.html" class="nav-item"><i class="fas fa-tools"></i> 维修保障智慧化</a>
+        <a href="cy.html" class="nav-item"><i class="fas fa-handshake"></i> 产业协同平台化</a>
     </div>
 
     <!-- 中间循环滑动图片窗口 (轮播) -->
@@ -572,29 +572,11 @@
         startAutoPlay();
 
         // 可选：为文件链接添加简单点击提醒 (演示用，不跳转实际下载)
-        const fileLinks = document.querySelectorAll('.file-name');
-        fileLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();  // 阻止实际跳转，仅演示
-                alert('演示模式：文件下载链接 (' + link.innerText.trim() + ')\n实际部署时可指向真实文件。');
-            });
-        });
+        
         // 所有通知按钮也拦截
-        const moreBtn = document.querySelector('.notice-col a[href="#"]');
-        if(moreBtn) {
-            moreBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                alert('跳转至通知列表页（演示）');
-            });
-        }
+        
         // 导航项点击演示
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                alert('导航至「' + item.innerText.trim() + '」板块（演示）');
-            });
-        });
+       
     })();
 </script>
 <!-- 
