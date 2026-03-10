@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>研发设计数字化 · 航发智库</title>
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ========== 全局样式 (继承首页风格) ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            color: #1e2b3a;
+            line-height: 1.5;
+        }
+
+        .wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.05);
+        }
+
+        /* ----- 顶部四大板块导航栏 (完全复用首页) ----- */
+        .nav-four {
+            display: flex;
+            flex-wrap: wrap;
+            background: linear-gradient(145deg, #0a2f44, #0b3b4f);
+            color: white;
+            padding: 0.2rem 0;
+            border-bottom: 4px solid #ffb347;
+        }
+
+        .nav-item {
+            flex: 1 1 200px;
+            text-align: center;
+            padding: 1.4rem 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.9);
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border-right: 1px solid rgba(255,255,255,0.15);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .nav-item:last-child { border-right: none; }
+        .nav-item i {
+            font-size: 1.6rem;
+            color: #ffcf7a;
+            transition: transform 0.2s;
+        }
+        .nav-item:hover {
+            background-color: #1f5a7e;
+            color: white;
+            box-shadow: inset 0 -4px 0 #ffb347;
+        }
+        .nav-item:hover i {
+            transform: scale(1.1);
+            color: #ffe6b3;
+        }
+        /* 当前模块高亮 (用于子页面标识) */
+        .nav-item.active {
+            background-color: #1f5a7e;
+            box-shadow: inset 0 -4px 0 #ffb347;
+            color: white;
+        }
+        .nav-item.active i { color: #ffe6b3; }
+
+        @media (max-width: 700px) {
+            .nav-item {
+                font-size: 1rem;
+                padding: 1rem 0.2rem;
+                flex-basis: 50%;
+            }
+            .nav-item i { font-size: 1.3rem; }
+        }
+
+        /* ----- 子页面内容区域 (取代首页轮播和双栏) ----- */
+        .subpage-container {
+            padding: 2rem 2.5rem;
+            background-color: #ffffff;
+            min-height: 500px;
+        }
+
+        /* 模块标题 + 简介 */
+        .module-header {
+            margin-bottom: 2.5rem;
+        }
+        .module-title {
+            font-size: 2.3rem;
+            font-weight: 700;
+            color: #0a2f44;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-left: 8px solid #ffb347;
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .module-title i {
+            color: #d48d2b;
+            font-size: 2.4rem;
+        }
+        .module-intro {
+            font-size: 1.15rem;
+            color: #2b4d66;
+            background: #f0f9ff;
+            padding: 1.2rem 2rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0,40,60,0.08);
+            border: 1px solid #d4e2f0;
+            max-width: 90%;
+        }
+
+        /* 检索栏 */
+        .search-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1.2rem;
+            background: #f6faff;
+            padding: 1.2rem 2rem;
+            border-radius: 60px;
+            margin: 2rem 0 2.5rem 0;
+            border: 1px solid #d9e6f2;
+            box-shadow: 0 6px 14px rgba(0,30,50,0.04);
+        }
+        .search-input-group {
+            flex: 3 1 260px;
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 40px;
+            border: 1px solid #cbdae6;
+            padding: 0.4rem 1rem;
+        }
+        .search-input-group i {
+            color: #a0b8cc;
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+        .search-input-group input {
+            width: 100%;
+            border: none;
+            padding: 0.6rem 0;
+            font-size: 1rem;
+            outline: none;
+            background: transparent;
+        }
+        .tag-select-group {
+            flex: 1 1 200px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border-radius: 40px;
+            border: 1px solid #cbdae6;
+            padding: 0.4rem 1.2rem;
+        }
+        .tag-select-group i {
+            color: #ffb347;
+        }
+        .tag-select-group select {
+            width: 100%;
+            border: none;
+            padding: 0.6rem 0;
+            font-size: 1rem;
+            background: transparent;
+            outline: none;
+            cursor: pointer;
+            color: #1e3b4f;
+            font-weight: 500;
+        }
+        .search-btn {
+            background: #ffb347;
+            border: none;
+            border-radius: 50px;
+            padding: 0.8rem 2.2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0a2f44;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 5px 12px rgba(255,170,70,0.3);
+            border: 1px solid #ffcf80;
+        }
+        .search-btn:hover {
+            background: #ffa01e;
+            transform: scale(1.02);
+            color: #000;
+        }
+
+        /* 案例列表 (仿文件列表风格) */
+        .case-list-header {
+            display: flex;
+            padding: 0.8rem 1rem;
+            background: #eef3f9;
+            border-radius: 30px;
+            margin: 1.5rem 0 0.8rem 0;
+            font-weight: 600;
+            color: #0b3b4f;
+            border: 1px solid #cfe0ed;
+        }
+        .case-list {
+            list-style: none;
+            border: 1px solid #e0ecf5;
+            border-radius: 30px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .case-item {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: #ffffff;
+            border-bottom: 1px solid #e6f0f8;
+            transition: background 0.1s;
+            gap: 10px;
+        }
+        .case-item:last-child { border-bottom: none; }
+        .case-item:hover {
+            background: #f2f9ff;
+        }
+
+        .case-id {
+            width: 80px;
+            font-weight: 700;
+            color: #1b5a7a;
+            background: #e5f0fb;
+            border-radius: 30px;
+            padding: 0.3rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+        .case-link {
+            flex: 2 1 250px;
+            font-weight: 600;
+            font-size: 1.15rem;
+            color: #003153;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .case-link i {
+            color: #d48d2b;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        .case-link:hover {
+            color: #b25600;
+            text-decoration: underline;
+        }
+        .case-tags {
+            flex: 1 1 200px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        .tag-badge {
+            background: #e1effa;
+            color: #1e506e;
+            border-radius: 30px;
+            padding: 0.25rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid #b9d2e9;
+            white-space: nowrap;
+        }
+
+        /* 分页控件 */
+        .pagination {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 2rem;
+        }
+        .page-btn {
+            background: white;
+            border: 1px solid #c0d4e5;
+            color: #1d4f73;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .page-btn:hover:not(.disabled) {
+            background: #ffb347;
+            border-color: #ffb347;
+            color: #0a2f44;
+        }
+        .page-btn.active-page {
+            background: #0b3b4f;
+            border-color: #0b3b4f;
+            color: white;
+        }
+        .page-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .page-arrow {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid #c0d4e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .page-arrow:hover:not(.disabled) {
+            background: #ffb347;
+        }
+        .page-info {
+            margin: 0 15px;
+            color: #2b5b7c;
+            font-weight: 500;
+        }
+
+        .footer-note {
+            background-color: #0b2d3e;
+            color: #bcd1df;
+            text-align: center;
+            padding: 1.5rem;
+            font-size: 0.95rem;
+            border-top: 1px solid #375f73;
+        }
+        a { text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <!-- 四大导航 (当前模块高亮) -->
+    <div class="nav-four">
+        <a href="rd.html" class="nav-item active"><i class="fas fa-drafting-compass"></i> 研发设计数字化</a>
+        <a href="mf.html" class="nav-item"><i class="fas fa-industry"></i> 生产制造智能化</a>
+        <a href="maint.html" class="nav-item"><i class="fas fa-tools"></i> 维修保障智慧化</a>
+        <a href="sync.html" class="nav-item"><i class="fas fa-handshake"></i> 产业协同平台化</a>
+    </div>
+
+    <!-- 子页面内容区域 (研发设计数字化) -->
+    <div class="subpage-container">
+        <!-- 模块标题 + 简介 -->
+        <div class="module-header">
+            <div class="module-title">
+                <i class="fas fa-drafting-compass"></i> 研发设计数字化
+            </div>
+            <div class="module-intro">
+                <i class="fas fa-quote-left" style="margin-right: 6px; color:#ffb347;"></i> 
+                涵盖基于模型的系统工程(MBSE)、数字孪生设计、仿真验证及协同研发平台。汇聚航空发动机全三维设计、虚拟集成等前沿案例。
+            </div>
+        </div>
+
+        <!-- 检索栏 -->
+        <div class="search-bar">
+            <div class="search-input-group">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="输入案例名称...">
+            </div>
+            <div class="tag-select-group">
+                <i class="fas fa-tags"></i>
+                <select id="tagSelect">
+                    <option value="all">全部标签</option>
+                    <!-- 由JS动态生成其余选项 -->
+                </select>
+            </div>
+            <button class="search-btn" id="searchBtn"><i class="fas fa-filter"></i> 检索</button>
+        </div>
+
+        <!-- 案例列表头部 (装饰) -->
+        <div class="case-list-header">
+            <span style="width:80px;">编号</span>
+            <span style="flex:2 1 250px;">案例名称</span>
+            <span style="flex:1 1 200px; text-align:right;">标签</span>
+        </div>
+
+        <!-- 案例列表容器 -->
+        <div id="caseListContainer" class="case-list">
+            <!-- 由JS动态渲染 -->
+        </div>
+
+        <!-- 分页控件 -->
+        <div class="pagination" id="paginationControls">
+            <!-- 动态生成 -->
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer-note">
+        <i class="fas fa-cogs"></i> 航空发动机产业智能化转型案例库 · 赋能智慧动力
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- 研发设计数字化 模拟数据集 ----------
+        const allCases = [
+            { id: 'RD001', name: '全三维数字样机协同设计平台', tags: ['数字孪生', '协同研发'], url: '#' },
+            { id: 'RD002', name: '基于MBSE的发动机总体设计', tags: ['MBSE', '总体设计'], url: '#' },
+            { id: 'RD003', name: '涡轮叶片气热耦合仿真优化', tags: ['仿真', '涡轮'], url: '#' },
+            { id: 'RD004', name: '航空发动机数字主线（设计端）', tags: ['数字主线', 'PLM'], url: '#' },
+            { id: 'RD005', name: '虚拟集成与验证平台(VIV)', tags: ['虚拟验证', '集成'], url: '#' },
+            { id: 'RD006', name: '智能设计推荐系统（AI辅助）', tags: ['AI辅助', '创成式设计'], url: '#' },
+            { id: 'RD007', name: '高低压涡轮一体化设计', tags: ['涡轮', '一体化'], url: '#' },
+            { id: 'RD008', name: '燃烧室多物理场耦合仿真', tags: ['仿真', '燃烧室'], url: '#' },
+            { id: 'RD009', name: '整机振动与可靠性数字孪生', tags: ['数字孪生', '可靠性'], url: '#' },
+            { id: 'RD010', name: '航空发动机结构优化GenAI', tags: ['AI辅助', '生成式设计'], url: '#' },
+            { id: 'RD011', name: '基于云原生的跨地域研发平台', tags: ['协同研发', '云原生'], url: '#' },
+            { id: 'RD012', name: '高性能计算(HPC)仿真自动化', tags: ['仿真', 'HPC'], url: '#' },
+            { id: 'RD013', name: '航空发动机多学科设计优化', tags: ['MDO', '总体设计'], url: '#' },
+            { id: 'RD014', name: '智能需求追溯与管理工具', tags: ['MBSE', '需求管理'], url: '#' }
+        ];
+
+        // 当前过滤+分页状态
+        let currentFiltered = [...allCases];
+        let currentPage = 1;
+        const pageSize = 10;
+
+        // DOM 元素
+        const searchInput = document.getElementById('searchInput');
+        const tagSelect = document.getElementById('tagSelect');
+        const searchBtn = document.getElementById('searchBtn');
+        const caseListContainer = document.getElementById('caseListContainer');
+        const paginationControls = document.getElementById('paginationControls');
+
+        // 提取所有唯一标签，并填充下拉框
+        function initTagOptions() {
+            const tagSet = new Set();
+            allCases.forEach(c => c.tags.forEach(t => tagSet.add(t)));
+            const sortedTags = Array.from(tagSet).sort();
+            sortedTags.forEach(tag => {
+                const option = document.createElement('option');
+                option.value = tag;
+                option.textContent = tag;
+                tagSelect.appendChild(option);
+            });
+        }
+
+        // 过滤函数 (基于搜索文本和选中标签)
+        function filterCases() {
+            const searchTerm = searchInput.value.trim().toLowerCase();
+            const selectedTag = tagSelect.value;
+
+            currentFiltered = allCases.filter(c => {
+                // 名称匹配
+                const matchName = c.name.toLowerCase().includes(searchTerm);
+                if (!matchName) return false;
+                // 标签匹配
+                if (selectedTag !== 'all' && !c.tags.includes(selectedTag)) return false;
+                return true;
+            });
+
+            currentPage = 1; // 重置到第一页
+            renderCaseList();
+            renderPagination();
+        }
+
+        // 渲染当前页案例
+        function renderCaseList() {
+            const start = (currentPage - 1) * pageSize;
+            const end = start + pageSize;
+            const pageCases = currentFiltered.slice(start, end);
+
+            if (pageCases.length === 0) {
+                caseListContainer.innerHTML = `<div style="text-align:center; padding:3rem; color:#6f8da0;">暂无匹配案例</div>`;
+                return;
+            }
+
+            let html = '';
+            pageCases.forEach(c => {
+                const tagsHtml = c.tags.map(t => `<span class="tag-badge">${t}</span>`).join('');
+                html += `
+                    <li class="case-item">
+                        <span class="case-id">${c.id}</span>
+                        <a href="${c.url}" class="case-link" target="_blank">${c.name} <i class="fas fa-external-link-alt"></i></a>
+                        <span class="case-tags">${tagsHtml}</span>
+                    </li>
+                `;
+            });
+            caseListContainer.innerHTML = html;
+
+            // 给所有案例链接添加演示弹窗 (阻止实际跳转)
+            document.querySelectorAll('.case-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    alert(`演示：跳转到案例详情页 [${link.innerText.trim()}]\n(实际部署时替换为真实链接)`);
+                });
+            });
+        }
+
+        // 渲染分页控件
+        function renderPagination() {
+            const totalPages = Math.ceil(currentFiltered.length / pageSize);
+            if (totalPages <= 1) {
+                paginationControls.innerHTML = ''; // 只有一页或0页不显示分页
+                return;
+            }
+
+            let html = '';
+            // 上一页
+            html += `<span class="page-arrow ${currentPage === 1 ? 'disabled' : ''}" id="prevPage"><i class="fas fa-chevron-left"></i></span>`;
+
+            // 页码 (最多显示5个，简化直接显示所有)
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<span class="page-btn ${i === currentPage ? 'active-page' : ''}" data-page="${i}">${i}</span>`;
+            }
+
+            // 下一页
+            html += `<span class="page-arrow ${currentPage === totalPages ? 'disabled' : ''}" id="nextPage"><i class="fas fa-chevron-right"></i></span>`;
+
+            // 附加信息
+            html += `<span class="page-info">共 ${currentFiltered.length} 条记录</span>`;
+
+            paginationControls.innerHTML = html;
+
+            // 绑定页码点击
+            document.querySelectorAll('.page-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const page = parseInt(e.currentTarget.dataset.page);
+                    if (page !== currentPage) {
+                        currentPage = page;
+                        renderCaseList();
+                        renderPagination();
+                    }
+                });
+            });
+
+            // 上一页/下一页
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            if (prevBtn && currentPage > 1) {
+                prevBtn.addEventListener('click', () => {
+                    currentPage--;
+                    renderCaseList();
+                    renderPagination();
+                });
+            }
+            if (nextBtn && currentPage < totalPages) {
+                nextBtn.addEventListener('click', () => {
+                    currentPage++;
+                    renderCaseList();
+                    renderPagination();
+                });
+            }
+        }
+
+        // 初始化: 标签下拉 + 渲染全部
+        initTagOptions();
+        filterCases(); // 首次渲染
+
+        // 绑定检索按钮和输入框回车
+        searchBtn.addEventListener('click', filterCases);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') filterCases();
+        });
+        tagSelect.addEventListener('change', filterCases);
+    })();
+</script>
+<!-- 说明：其他三个子页面（生产制造智能化、维修保障智慧化、产业协同平台化）结构与本页完全一致，
+     只需修改：1.导航栏对应的 active 项； 2. module-title 的文字和图标； 3. module-intro 的简介；
+     4. allCases 数据数组（案例编号/名称/标签/链接）。可将此文件另存为 rd.html，
+     并参照以下核心变化创建 mf.html, maint.html, sync.html -->
+</body>
+</html>
