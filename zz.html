@@ -379,7 +379,7 @@
             </div>
             <div class="module-intro">
                 <i class="fas fa-quote-left" style="margin-right: 6px; color:#ffb347;"></i> 
-                涵盖基于模型的系统工程(MBSE)、数字孪生设计、仿真验证及协同研发平台。汇聚航空发动机全三维设计、虚拟集成等前沿案例。
+                涵盖全自动化加工生产线、增材制造、新型工艺研发等前沿案例。
             </div>
         </div>
 
@@ -427,9 +427,7 @@
     (function() {
         // ---------- 研发设计数字化 模拟数据集 ----------
         const allCases = [
-            { id: 'P001', name: '中国航发北京航科全自动制造流水线', tags: ['数字孪生', '协同研发','自动化'], url: '#' },
-            { id: 'P002', name: '基于MBSE的发动机总体设计', tags: ['MBSE', '总体设计'], url: '#' },
-            { id: 'P003', name: '涡轮叶片气热耦合仿真优化', tags: ['仿真', '涡轮'], url: '#' },
+            { id: 'P001', name: '北京航科：传统制造业的转型创新', tags: ['自动化产线', '控制系统'], url: 'P001.html' }
         ];
 
         // 当前过滤+分页状态
@@ -501,12 +499,7 @@
             caseListContainer.innerHTML = html;
 
             // 给所有案例链接添加演示弹窗 (阻止实际跳转)
-            document.querySelectorAll('.case-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    alert(`演示：跳转到案例详情页 [${link.innerText.trim()}]\n(实际部署时替换为真实链接)`);
-                });
-            });
+            
         }
 
         // 渲染分页控件

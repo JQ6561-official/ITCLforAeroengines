@@ -427,20 +427,8 @@
     (function() {
         // ---------- 研发设计数字化 模拟数据集 ----------
         const allCases = [
-            { id: 'D001', name: '全三维数字样机协同设计平台', tags: ['数字孪生', '协同研发'], url: '#' },
-            { id: 'D002', name: '基于MBSE的发动机总体设计', tags: ['MBSE', '总体设计'], url: '#' },
-            { id: 'D003', name: '涡轮叶片气热耦合仿真优化', tags: ['仿真', '涡轮'], url: '#' },
-            { id: 'D004', name: '航空发动机数字主线（设计端）', tags: ['数字主线', 'PLM'], url: '#' },
-            { id: 'D005', name: '虚拟集成与验证平台(VIV)', tags: ['虚拟验证', '集成'], url: '#' },
-            { id: 'D006', name: '智能设计推荐系统（AI辅助）', tags: ['AI辅助', '创成式设计'], url: '#' },
-            { id: 'D007', name: '高低压涡轮一体化设计', tags: ['涡轮', '一体化'], url: '#' },
-            { id: 'D008', name: '燃烧室多物理场耦合仿真', tags: ['仿真', '燃烧室'], url: '#' },
-            { id: 'D009', name: '整机振动与可靠性数字孪生', tags: ['数字孪生', '可靠性'], url: '#' },
-            { id: 'D010', name: '航空发动机结构优化GenAI', tags: ['AI辅助', '生成式设计'], url: '#' },
-            { id: 'D011', name: '基于云原生的跨地域研发平台', tags: ['协同研发', '云原生'], url: '#' },
-            { id: 'D012', name: '高性能计算(HPC)仿真自动化', tags: ['仿真', 'HPC'], url: '#' },
-            { id: 'D013', name: '航空发动机多学科设计优化', tags: ['MDO', '总体设计'], url: '#' },
-            { id: 'D014', name: '智能需求追溯与管理工具', tags: ['MBSE', '需求管理'], url: '#' }
+            { id: 'D001', name: '中发天信：设计生产智能化', tags: ['数字孪生', '协同研发'], url: 'D001.html' },
+            { id: 'D002', name: '中航成发：数字化转型降本增效', tags: ['全生命周期', '降本增效','数字化转型'], url: 'D002.html' }
         ];
 
         // 当前过滤+分页状态
@@ -512,12 +500,7 @@
             caseListContainer.innerHTML = html;
 
             // 给所有案例链接添加演示弹窗 (阻止实际跳转)
-            document.querySelectorAll('.case-link').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    alert(`演示：跳转到案例详情页 [${link.innerText.trim()}]\n(实际部署时替换为真实链接)`);
-                });
-            });
+            
         }
 
         // 渲染分页控件
